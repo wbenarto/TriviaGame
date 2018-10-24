@@ -1,0 +1,36 @@
+body {
+    background-image: url("assets/images/Background.jpg");
+}
+
+.container {
+    background-color: lightcyan;
+    border-radius: 25px;
+    border: solid lightseagreen 5px;
+    width: 900px;
+    height: 600px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+h1, h2, h3, h4, h5, p {
+    text-align: center;
+    
+}
+p {
+    margin: 20px;
+    font-size: 40px;
+}
+
+@media only screen and (max-width:800px) {
+    /* For tablets: */
+    .container {
+      width: 80%;
+      padding: 0;
+    }
+  }
+  @media only screen and (max-width:500px) {
+    /* For mobile phones: */
+    .container {
+      width: 100%;
+    }
