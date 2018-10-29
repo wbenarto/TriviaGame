@@ -1,25 +1,82 @@
-body {
-    background-image: url("assets/images/Background.jpg");
-}
 
+.jumbotron.jumbotron-fluid {
+    background-image: url("C:/Users/wbena/Documents/Homeworks/HW5/TriviaGame/assets/images/background2.jpg");
+    background-position: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 900px;
+}
 .container {
-    background-color: lightcyan;
+    /* background-color: lightcyan; */
     border-radius: 25px;
     border: solid lightseagreen 5px;
-    width: 900px;
-    height: 600px;
+    width: 1100px;
+    height: auto;
     padding: 20px;
     margin: auto;
     margin-top: 40px;
 }
 
+#content {
+    
+    text-align: center;
+
+}
 h1, h2, h3, h4, h5, p {
     text-align: center;
     
 }
+
+h2 {
+    
+    padding: 15px;
+}
+
+h3 {
+    margin-top: 10px;
+    padding: 15px;
+}
+
 p {
     margin: 20px;
     font-size: 40px;
+}
+
+.form-radio {
+    margin: auto;
+    size: 15px;
+    height: 20px;
+    width: 20px;
+    
+}
+
+.choices {
+    padding: 10px;
+    margin: auto;
+    font-size: 20px;
+    text-align: center;
+
+}
+
+#done {
+    display: block;
+    font: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #d6cf6b;
+    border-radius: 40px;
+    
+}
+
+#start {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 32px;
+    background-color: #61a8e2d8;
+    margin: auto;
 }
 
 @media only screen and (max-width:800px) {
@@ -34,3 +91,14 @@ p {
     .container {
       width: 100%;
     }
+  }
+
+  #pause-button, #theme-button {
+    border-radius: 8px;
+    padding: 5px;
+    font-size: 20px;
+    background-color: #61a8e2d8;
+    margin-left: 10px;
+    width: 140px;
+
+  }

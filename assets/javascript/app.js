@@ -1,146 +1,207 @@
-//Set global variables
-var timer;
-var questions;
-var answers;
-var result;
+var card = $("#content");
 
-//set up questions and answers
-var questions= [
-    {
-        q: "What planet was Goku born?",
-        a: "Vegeta",
-        b: "Earth",
-        c: "Namek",
-        d: "Pluto",
-        correct:"c",
-        imageURL: ""
-    }, {
-        q: "What is Goku's original birth name?",
-        a: "Wukong",
-        b: "Kakarot",
-        c: "Son",
-        d: "Son Goku",
-        correct: "b",
-        imageURL: ""
-    }, {
-        q: "What was master Roshi's first gift to Goku?",
-        a: "He taught him Kamehameha",
-        b: "Scouter",
-        c: "Senzu Bean",
-        d: "Flying Nimbus",
-        correct: "d",
-        imageURL:""
-    }, {
-        q: "Who is Gohan's first master?",
-        a: "King Kai",
-        b: "Master Roshi",
-        c: "Picollo",
-        d: "Krillen",
-        correct: "c",
-        imageURL: ""
-    }, {
-        q: "Which of these half saiyans was the only one to be born with a tail?",
-        a: "Goten.",
-        b: "Trunks.",
-        c: "Gohan.",
-        d: "Vegeta",
-        correct: "c",
-        imageURL: ""
-    }, {
-        q: "How did Gohan and Krillen get a power boost on planet Namek?",
-        a: "Senzu Bean.",
-        b: "Guru unleashed their hidden power.",
-        c: "Goku shared his Chi to both of them.",
-        correct: "b",
-        imageURL: ""
-    }, {
-        q: "What is the equipment used to find the dragon balls?",
-        a: "Dragon Scouter",
-        b: "Dragon Radar",
-        c: "DBZ GPS system",
-        d: "Iphone-X",
-        correct: "b",
-        imageURL:""
-    }, {
-        q: "Which opponent did Goku use the Spirit Bomb to for the first time?",
-        a: "Frieza",
-        b: "Jiren",
-        c: "Vegeta",
-        d: "Cell",
-        correct: "a",
-        imageURL:""
-    }, {
-        q: "How did Vegeta finally attain the legendary form of Super Saiyan?",
-        a: "He trained so hard",
-        b: "A chemical reaction",
-        c: "With a pure heart",
-        d: "with a heart of pure evil",
-        correct:"d",
-        imageURL:""
-    },{
-        q: "What is Goku's highest saiyan form he attained?",
-        a: "Mastered Ultra Instinct",
-        b: "Super Saiyan God",
-        c: "Super Saiyan Rose",
-        d: "Super Saiyan Blue",
-        correct: "a",
-        imageURL: "assets/images/Mastered_Ultra_Instinct.jpg"
+var questions = [{
+    q: "What planet was Goku born?",
+    choices: ["Vegeta", "Earth", "Namek", "Pluto"],
+    answer: "Vegeta",
+}, {
+    q: "What is Goku's original birth name?",
+    choices: ["Wukong", "Kakarot", "Son", "Son Goku"],
+    answer: "Kakarot",
+}, {
+    q: "What was master Roshi's first gift to Goku?",
+    choices: ["He taught him Kamehameha", "Scouter", "Senzu Bean", "Flying Nimbus"],
+    answer: "Flying Nimbus",
+}, {
+    q: "Who is Gohan's first teacher?",
+    choices: ["King Kai", "Master Roshi", "Picollo", "Krillen"],
+    answer: "Picollo",
+}, {
+    q: "Which of these half saiyans was the only one to be born with a tail?",
+    choices: ["Goten", "Trunks", "Gohan", "Vegeta"],
+    answer: "Gohan",
+}, {
+    q: "How did Gohan and Krillen get a power boost on planet Namek?",
+    choices: ["Senzu Bean", "Guru unleashed their hidden power", "Goku shared his Chi to both of them", "ShenLong gave him the boost"],
+    answer: "Guru unleashed their hidden power",
+}, {
+    q: "What is the equipment used to find the dragon balls?",
+    choices: ["Dragon Scouter", "Dragon Radar", "DBZ GPS system", "Iphone-X",],
+    answer: "Dragon Radar",
+}, {
+    q: "Which opponent did Goku use the Spirit Bomb to for the first time?",
+    choices: ["Frieza", "Jiren", "Vegeta", "Cell"],
+    answer: "Frieza",
+}, {
+    q: "How did Vegeta finally attain the legendary form of Super Saiyan?",
+    choices: ["He trained so hard", "A chemical reaction", "With a pure heart", "With a heart of pure evil"],
+    answer: "With a heart of pure evil",
+}, {
+    q: "What is Goku's highest saiyan form he attained?",
+    choices: ["Mastered Ultra Instinct", "Super Saiyan God", "Super Saiyan Rose", "Super Saiyan Blue"],
+    answer: "Mastered Ultra Instinct",
 }];
 
+var timer;
 
-//Function to generate countdown timer 
-//set timer counter to 10 
-var number = 15;
+var game = {
 
-//variable that will hold our interval ID when we execute the function
-var intervalId;
+    correct: 0,
+    incorrect: 0,
+    counter: 120,
 
-function run() {
-    clearInterval(intervalId);
-    intervalId = setInterval(decrement, 1000);
-}
+    countdown: function () {
+        game.counter--;
+        //show timer in the #timer tag
+        $("#counter-number").text(game.counter);
+        if (game.counter === 0) {
+            game.done();
+        }
+    },
 
-//Decrement function
-function decrement() {
+    start: function () {
+        timer = setInterval(game.countdown, 1000);
 
-    //decrease number by one
-    number--;
 
-    //show timer in the #timer tag
-    $("#timer").html("<h2>" + number + "</h2>");
+        $("#content").prepend("<h2>Time Remaining: <span id='counter-number'></span> Seconds</h2>");
+        $("#start").remove();
 
-    if (number === 0) {
-        stop();
-        alert("times up!");
+        //theme song and buttons
+        var audioElement = document.createElement("audio");
+        audioElement.setAttribute("src", "C:/Users/wbena/Documents/Homeworks/HW5/TriviaGame/assets/images/audio.mp3");
+        audioElement.play();
+
+        var playButton = $("<button id='theme-button'>Play Audio</button>");
+        $(playButton).on("click", function () {
+            audioElement.play();
+        });
+        card.append($(playButton));
+
+        // Pause Button
+        var pauseButton = $("<button id='pause-button'>Pause Audio</button>");
+        $(pauseButton).on("click", function () {
+            audioElement.pause();
+        });
+        card.append($(pauseButton));
+
+
+        for (var i = 0; i < questions.length; i++) {
+            card.append("<h3>" + questions[i].q + "</h3>");
+            for (var j = 0; j < questions[i].choices.length; j++) {
+                card.append("<input class='form-radio' type='radio' name='question-" + i +
+                    "' value='" + questions[i].choices[j] + "''>" + "<span class='choices'>" + questions[i].choices[j] + "</span>");
+            }
+
+        }
+        $("</br>");
+        card.append("<button id='done'> Submit Answers </button>");
+    },
+
+    done: function () {
+
+        $.each($("input[name='question-0']:checked"), function () {
+            if ($(this).val() === questions[0].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-1']:checked"), function () {
+            if ($(this).val() === questions[1].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-2']:checked"), function () {
+            if ($(this).val() === questions[2].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-3']:checked"), function () {
+            if ($(this).val() === questions[3].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-4']:checked"), function () {
+            if ($(this).val() === questions[4].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-5']:checked"), function () {
+            if ($(this).val() === questions[5].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-6']:checked"), function () {
+            if ($(this).val() === questions[6].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-7']:checked"), function () {
+            if ($(this).val() === questions[7].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-8']:checked"), function () {
+            if ($(this).val() === questions[8].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        $.each($("input[name='question-9']:checked"), function () {
+            if ($(this).val() === questions[9].answer) {
+                game.correct++;
+            } else {
+                game.incorrect++;
+            }
+        });
+
+        this.result();
+        
+    },
+
+    result: function () {
+        clearInterval(timer);
+
+        $("#container h2").remove();
+
+        card.html("<h2>Game Over!</h2>");
+        card.append("<h3>Correct Answers: " + this.correct + "</h3>");
+        card.append("<h3>Incorrect Answers: " + this.incorrect + "</h3>");
+        card.append("<h3>Unanswered: " + (questions.length - (this.incorrect + this.correct)) + "</h3>");
     }
-}
 
-//stop function
-function stop() {
-    clearInterval(intervalId);
-}
-
-run();
+};
 
 
+//Click Events
+$(document).on("click", "#start", function () {
+    game.start();
+});
 
-//Function to generate random questions
-
-//Function to generate answer list
-//Function to start game
-function start () {};
-    //Game starts, countdown starts
-    //Generate questions and display in page
-    //Generate list of possible answers and display in page
-    
-//set up rules for the game
-    //start game, hide all elements and only show start button
-    //press start to start game
-        //run questions function
-            //if statement 
-    //game starts and when user click on the answer
-        //show right or wrong 
-        //adds score 
-        //show the right answer
-        //if timer runs out and no clicks, increment wrong answer
-        //go to another question
+$(document).on("click", "#done", function () {
+    game.done();
+});
